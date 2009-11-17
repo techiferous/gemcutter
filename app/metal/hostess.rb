@@ -75,6 +75,38 @@ class Hostess < Sinatra::Default
     end
   end
 
+  post "/gems" do
+    please_upgrade
+  end
+
+  post "/gems/:name/owners.json" do
+    please_upgrade
+  end
+
+  delete "/gems/:name/owners.json" do
+    please_upgrade
+  end
+
+  get "/gems/:name/owners.json" do
+    please_upgrade
+  end
+
+  get "/api_key" do
+    please_upgrade
+  end
+
+  get "/gems/:name.json" do
+    please_upgrade
+  end
+
+  post "/gems/:name/migrate" do
+    please_upgrade
+  end
+
+  def please_upgrade
+    halt 503, "Please upgrade your Gemcutter gem with: gem update gemcutter\nSee http://update.gemcutter.org/ for more info!"
+  end
+
   def current_path
     @current_path ||= Gemcutter.server_path(request.env["PATH_INFO"])
   end
