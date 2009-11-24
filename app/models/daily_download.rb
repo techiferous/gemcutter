@@ -6,7 +6,9 @@ class DailyDownload < ActiveRecord::Base
                                        :conditions => { :version_id => version.id })
 
     downloads_by_date.each do |on, amount|
-      version.daily_downloads.create(:on => on, :amount => amount)
+      daily = version.daily_downloads.find_or_initialize_by_on(on)
+      daily.increment(:amount, amount)
+      daily.save
     end
 
     version.downloads.delete_all

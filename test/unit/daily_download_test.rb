@@ -29,5 +29,17 @@ class DailyDownloadTest < ActiveSupport::TestCase
       assert_equal 3, @version.reload.downloads_count
       assert_equal 3, @version.rubygem.downloads
     end
+
+    should "aggregate downloads from several days at a time" do
+      DailyDownload.aggregate(@version)
+      Download.create(:raw => "#{@version.full_name}.gem", :created_at => 1.day.ago).perform
+      DailyDownload.aggregate(@version)
+
+      assert_equal 4, @version.reload.downloads_count
+      assert_equal 4, @version.rubygem.downloads
+
+      first_daily = DailyDownload.find_by_version_id_and_on!(@version.id, 1.day.ago.to_date)
+      assert_equal 3, first_daily.amount
+    end
   end
 end
