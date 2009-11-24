@@ -4,6 +4,7 @@ class VersionTest < ActiveSupport::TestCase
   should_belong_to :rubygem
   should_have_many :dependencies
   should_have_many :downloads, :dependent => :destroy
+  should_have_many :daily_downloads, :dependent => :destroy
 
   context "with a rubygem" do
     setup do
