@@ -1,4 +1,13 @@
 namespace :gemcutter do
+  desc "Wrap up downloads!"
+  task :aggregate_downloads => :environment do
+    count = Version.count
+    Version.all.each_with_index do |version, index|
+      puts "Processing version #{index}/#{count}"
+      DailyDownload.aggregate(version)
+    end
+  end
+
   desc "Store legacy index"
   task :store_legacy_index => :environment do
     puts "Loading up versions..."
